@@ -1,7 +1,7 @@
 from expecter import expect
 import unittest
 
-from customer import Statement
+from statement import Statement
 from movie import Movie
 from rental import Rental
 
