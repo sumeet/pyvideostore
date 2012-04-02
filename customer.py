@@ -1,22 +1,18 @@
 from movie import Movie
 
 
-class Customer(object):
+class Statement(object):
 
     def __init__(self, name):
-        self._name = name
+        self.name = name
         self._rentals = []
 
     def add_rental(self, rental):
         self._rentals.append(rental)
 
-    @property
-    def name(self):
-        return self._name
-
-    def statement(self):
-        total_amount = 0
-        frequent_renter_points = 0
+    def generate(self):
+        self.total_amount = 0
+        self.frequent_renter_points = 0
         rentals = self._rentals
         result = 'Rental Record for ' + self.name + '\n'
 
@@ -35,17 +31,17 @@ class Customer(object):
                 if rental.days_rented > 3:
                     this_amount += (rental.days_rented - 3) * 1.5
 
-            frequent_renter_points += 1
+            self.frequent_renter_points += 1
 
             if (rental.movie.price_code == Movie.NEW_RELEASE and
                 rental.days_rented > 1):
-                frequent_renter_points += 1
+                self.frequent_renter_points += 1
 
             result += '\t' + rental.movie.title + '\t' + str(this_amount) + '\n'
-            total_amount += this_amount
+            self.total_amount += this_amount
 
-        result += 'You owed ' + str(total_amount) + '\n'
-        result += 'You earned ' + str(frequent_renter_points) + ' frequent ' \
+        result += 'You owed ' + str(self.total_amount) + '\n'
+        result += 'You earned ' + str(self.frequent_renter_points) + ' frequent ' \
                   'renter points\n'
 
         return result
