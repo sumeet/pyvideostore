@@ -1,21 +1,28 @@
 class Movie(object):
 
-    CHILDRENS = 2
     REGULAR = 0
     NEW_RELEASE = 1
+    CHILDRENS = 2
 
     def __init__(self, title, price_code):
-        self._title = title
-        self._price_code = price_code
+        self.title = title
+        self.price_code = price_code
 
-    @property
-    def price_code(self):
-        return self._price_code
+    def rental_points(self, days_rented):
+        if (self.price_code == Movie.NEW_RELEASE and days_rented > 1):
+            return 2
+        else:
+            return 1
 
-    @price_code.setter
-    def price_code(self, code):
-        self._price_code = code
-
-    @property
-    def title(self):
-        return self._title
+    def amount(self, days_rented):
+        if self.price_code == Movie.REGULAR:
+            rental_amount = 2
+            if days_rented > 2:
+                rental_amount += (days_rented - 2) * 1.5
+        elif self.price_code == Movie.NEW_RELEASE:
+            rental_amount = days_rented * 3
+        elif self.price_code == Movie.CHILDRENS:
+            rental_amount = 1.5
+            if days_rented > 3:
+                rental_amount += (days_rented - 3) * 1.5
+        return rental_amount
