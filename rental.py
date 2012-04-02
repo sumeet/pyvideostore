@@ -1,6 +1,3 @@
-from movie import Movie
-
-
 class Rental(object):
 
     def __init__(self, movie, days_rented):

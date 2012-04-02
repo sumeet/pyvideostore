@@ -1,6 +1,3 @@
-from movie import Movie
-
-
 class Statement(object):
 
     def __init__(self, name):

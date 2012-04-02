@@ -2,7 +2,7 @@ from expecter import expect
 import unittest
 
 from statement import Statement
-from movie import Movie
+from movie import ChildrensMovie, NewReleaseMovie, RegularMovie
 from rental import Rental
 
 
@@ -10,12 +10,12 @@ class VideoStoreTest(unittest.TestCase):
 
     def setUp(self):
         self.statement = Statement('Customer Name')
-        self.new_release_a = Movie('New Release A', Movie.NEW_RELEASE)
-        self.new_release_b = Movie('New Release B', Movie.NEW_RELEASE)
-        self.childrens = Movie('Childrens', Movie.CHILDRENS)
-        self.regular_a = Movie('Regular A', Movie.REGULAR)
-        self.regular_b = Movie('Regular B', Movie.REGULAR)
-        self.regular_c = Movie('Regular C', Movie.REGULAR)
+        self.new_release_a = NewReleaseMovie('New Release A')
+        self.new_release_b = NewReleaseMovie('New Release B')
+        self.childrens = ChildrensMovie('Childrens')
+        self.regular_a = RegularMovie('Regular A')
+        self.regular_b = RegularMovie('Regular B')
+        self.regular_c = RegularMovie('Regular C')
 
     def test_single_new_release_statement_totals(self):
         self.statement.add_rental(Rental(self.new_release_a, 3))
