@@ -1,51 +1,36 @@
 from movie import Movie
 
 
-class Customer(object):
+class Statement(object):
 
     def __init__(self, name):
-        self._name = name
+        self.name = name
         self._rentals = []
 
     def add_rental(self, rental):
         self._rentals.append(rental)
 
+    def generate(self):
+        return self._header() + self._rental_lines() + self._footer()
+
+    def _header(self):
+        return 'Rental Record for %s\n' % self.name
+
+    def _rental_lines(self):
+        return ''.join(self._rental_line(rental) for rental in self._rentals)
+
+    def _rental_line(self, rental):
+        return '\t%s\t%s\n' % (rental.title, rental.cost)
+
+    def _footer(self):
+        return ('You owed %s\n'
+                'You earned %d frequent renter points\n' % (
+                    self.amount_owed, self.frequent_renter_points))
+
     @property
-    def name(self):
-        return self._name
+    def amount_owed(self):
+        return sum(rental.cost for rental in self._rentals)
 
-    def statement(self):
-        total_amount = 0
-        frequent_renter_points = 0
-        rentals = self._rentals
-        result = 'Rental Record for ' + self.name + '\n'
-
-        for rental in rentals:
-            this_amount = 0
-
-            # determines the amount for each line
-            if rental.movie.price_code == Movie.REGULAR:
-                this_amount += 2
-                if rental.days_rented > 2:
-                    this_amount += (rental.days_rented - 2) * 1.5
-            elif rental.movie.price_code == Movie.NEW_RELEASE:
-                this_amount += rental.days_rented * 3
-            elif rental.movie.price_code == Movie.CHILDRENS:
-                this_amount += 1.5
-                if rental.days_rented > 3:
-                    this_amount += (rental.days_rented - 3) * 1.5
-
-            frequent_renter_points += 1
-
-            if (rental.movie.price_code == Movie.NEW_RELEASE and
-                rental.days_rented > 1):
-                frequent_renter_points += 1
-
-            result += '\t' + rental.movie.title + '\t' + str(this_amount) + '\n'
-            total_amount += this_amount
-
-        result += 'You owed ' + str(total_amount) + '\n'
-        result += 'You earned ' + str(frequent_renter_points) + ' frequent ' \
-                  'renter points\n'
-
-        return result
+    @property
+    def frequent_renter_points(self):
+        return sum(rental.points for rental in self._rentals)

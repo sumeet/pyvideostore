@@ -1,21 +1,34 @@
 class Movie(object):
 
-    CHILDRENS = 2
-    REGULAR = 0
-    NEW_RELEASE = 1
+    def __init__(self, title):
+        self.title = title
 
-    def __init__(self, title, price_code):
-        self._title = title
-        self._price_code = price_code
 
-    @property
-    def price_code(self):
-        return self._price_code
+class NewReleaseMovie(Movie):
 
-    @price_code.setter
-    def price_code(self, code):
-        self._price_code = code
+    def calculate_cost(self, days_rented):
+        return days_rented * 3
 
-    @property
-    def title(self):
-        return self._title
+    def calculate_points(self, days_rented):
+        return 2 if days_rented > 1 else 1
+
+
+class ChildrensMovie(Movie):
+
+    def calculate_cost(self, days_rented):
+        return (days_rented - 2) * 1.5 if (days_rented) > 3 else 1.5
+
+    def calculate_points(self, days_rented):
+        return 1
+
+
+class RegularMovie(Movie):
+
+    def calculate_cost(self, days_rented):
+        if days_rented > 2:
+            return 2 + (days_rented - 2) * 1.5
+        else:
+            return 2
+
+    def calculate_points(self, days_rented):
+        return 1
