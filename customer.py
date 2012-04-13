@@ -13,6 +13,14 @@ class Statement(object):
     def generate(self):
         return self._header() + self._rental_lines() + self._footer()
 
+    @property
+    def amount_owed(self):
+        return sum(rental.cost for rental in self._rentals)
+
+    @property
+    def frequent_renter_points(self):
+        return sum(rental.points for rental in self._rentals)
+
     def _header(self):
         return 'Rental Record for %s\n' % self.customer_name
 
@@ -26,11 +34,3 @@ class Statement(object):
         return ('You owed %s\n'
                 'You earned %d frequent renter points\n' % (
                     self.amount_owed, self.frequent_renter_points))
-
-    @property
-    def amount_owed(self):
-        return sum(rental.cost for rental in self._rentals)
-
-    @property
-    def frequent_renter_points(self):
-        return sum(rental.points for rental in self._rentals)
